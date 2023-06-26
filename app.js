@@ -1,5 +1,3 @@
-// global variables
-// querySelector returns the first element in the document that matches
 const productContainer = document.querySelector("section");
 const resultsButton = document.querySelector("section + div");
 const image1 = document.querySelector("section img:first-child");
@@ -23,12 +21,10 @@ function Product(name, src) {
 }
 
 function renderProducts() {
-  // we need to generate a number to reference the product we want to render onto the page
   let product1 = getRandomNumber();
   let product2 = getRandomNumber();
   let product3 = getRandomNumber();
 
-  // how could we prevent product1 being the same number a product2?
   while (
     product1 === product2 ||
     product1 === product3 ||
@@ -38,7 +34,6 @@ function renderProducts() {
     product3 = getRandomNumber();
   }
 
-  // now we have two random numbers lets set the attributes of our images in the document.
   image1.src = allProducts[product1].src;
   image2.src = allProducts[product2].src;
   image3.src = allProducts[product3].src;
@@ -55,7 +50,7 @@ function handleProductClick(event) {
     alert("Please click on an image");
   } else {
     clicks++;
-    // console.log(clicks);
+
     let clickedProduct = event.target.alt;
     for (let i = 0; i < allProducts.length; i++) {
       if (clickedProduct === allProducts[i].name) {
@@ -76,7 +71,6 @@ function handleProductClick(event) {
 }
 
 function renderResults() {
-  // console.log("Your results are in!");
   let ul = document.querySelector("ul");
   for (let i = 0; i < allProducts.length; i++) {
     let li = document.createElement("li");
@@ -107,7 +101,6 @@ const wineglass = new Product("Wine Glass", "assets/images/wine-glass.jpg");
 
 renderProducts();
 
-// Modify the button text initially to "Vote Now"
 resultsButton.textContent = "Vote Now";
 
 productContainer.addEventListener("click", handleProductClick);
