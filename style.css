@@ -33,6 +33,7 @@ h1 {
   color: white;
   padding: 5px;
   margin: 10px;
+  display: inline;
 }
 
 h2 {

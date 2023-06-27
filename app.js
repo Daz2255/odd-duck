@@ -80,6 +80,17 @@ function renderChart(chartType, datasets, labels) {
           beginAtZero: true,
         },
       },
+      plugins: {
+        title: {
+          display: true,
+          text:
+            chartType === "bar"
+              ? "Number of Clicks and Views"
+              : chartType === "pie"
+              ? "Number of Clicks"
+              : "Number of Views",
+        },
+      },
     },
   };
 
@@ -138,6 +149,9 @@ function Product(name, src) {
 }
 
 // Render product images
+
+let previousProducts = [];
+
 function renderProducts() {
   let product1 = getRandomNumber();
   let product2 = getRandomNumber();
@@ -146,11 +160,17 @@ function renderProducts() {
   while (
     product1 === product2 ||
     product1 === product3 ||
-    product2 === product3
+    product2 === product3 ||
+    previousProducts.includes(product1) ||
+    previousProducts.includes(product2) ||
+    previousProducts.includes(product3)
   ) {
+    product1 = getRandomNumber();
     product2 = getRandomNumber();
     product3 = getRandomNumber();
   }
+
+  previousProducts = [product1, product2, product3];
 
   image1.src = allProducts[product1].src;
   image2.src = allProducts[product2].src;
@@ -209,7 +229,6 @@ const unicorn = new Product("Unicorn", "assets/images/unicorn.jpg");
 const watercan = new Product("Water Can", "assets/images/water-can.jpg");
 const wineglass = new Product("Wine Glass", "assets/images/wine-glass.jpg");
 
-// Initial rendering
 renderProducts();
 resultsButton.textContent = "Vote Now";
 productContainer.addEventListener("click", handleProductClick);
