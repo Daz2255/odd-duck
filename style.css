@@ -73,7 +73,8 @@ img {
 .results {
   margin: auto;
 }
-section + div {
+section + div,
+.vote {
   background-color: darkgrey;
   color: white;
   padding: 0.5rem 1rem;

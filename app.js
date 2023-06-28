@@ -109,6 +109,31 @@ function generateRandomColors(count) {
   }
   return colors;
 }
+// make a bar chart to display total views and clicks
+function renderTotalChart() {
+  const totalClicks = allProducts.reduce(
+    (sum, product) => sum + product.clicks,
+    0
+  );
+  const totalViews = allProducts.reduce(
+    (sum, product) => sum + product.views,
+    0
+  );
+
+  const data = [totalClicks, totalViews];
+  const labels = ["Total Clicks", "Total Views"];
+  const colors = ["#6495ED", "#40E0D0"];
+
+  const dataset = {
+    label: "Total",
+    data: data,
+    backgroundColor: colors,
+    borderColor: colors,
+    borderWidth: 1,
+  };
+
+  renderChart("bar", [dataset], labels);
+}
 //results button
 resultsButton.addEventListener("click", () => {
   if (!myChart) {
@@ -128,6 +153,7 @@ resultsButton.addEventListener("click", () => {
     renderChart("doughnut", [chartData.viewsDataset], chartData.labels);
     resultsButton.style.display = "none";
   }
+
   image1.style.display = "none";
   image2.style.display = "none";
   image3.style.display = "none";
@@ -197,14 +223,40 @@ function handleProductClick(event) {
         break;
       }
     }
+    // I need to call the save product funtion
+    saveProductData();
+
     if (clicks === maxClicksAllowed) {
       productContainer.removeEventListener("click", handleProductClick);
-      productContainer.className = "no-voting";
+
       resultsButton.textContent = "View Results";
       resultsButton.className = "clicks-allowed";
+
+      const refreshButton = document.createElement("button");
+      refreshButton.textContent = "Vote Again";
+      refreshButton.addEventListener("click", () => {
+        location.reload();
+      });
+
+      resultsButton.parentNode.insertBefore(
+        refreshButton,
+        resultsButton.nextSibling
+      );
     } else {
       renderProducts();
     }
+  }
+}
+// I need a function to save the product data
+function saveProductData() {
+  localStorage.setItem("productData", JSON.stringify(allProducts));
+}
+// I need a function using an if statement to load the product data
+
+function loadProductData() {
+  const storedProductData = localStorage.getItem("productData");
+  if (storedProductData) {
+    allProducts = JSON.parse(storedProductData);
   }
 }
 
@@ -229,6 +281,8 @@ const unicorn = new Product("Unicorn", "assets/images/unicorn.jpg");
 const watercan = new Product("Water Can", "assets/images/water-can.jpg");
 const wineglass = new Product("Wine Glass", "assets/images/wine-glass.jpg");
 
+// I need to call loadProducData before renderproducts
+loadProductData();
 renderProducts();
 resultsButton.textContent = "Vote Now";
 productContainer.addEventListener("click", handleProductClick);
